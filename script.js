@@ -1,28 +1,54 @@
 const personajes = document.querySelectorAll(".canibal , .sacerdote");
-const contenedor = document.querySelector(".contenedor");
+const contenedorBarco = document.querySelector(".contenedor");
 const ladoIzquierdo = document.querySelector(".lado.inicio");
 const ladoDerecho = document.querySelector(".lado.fin");
 const button = document.querySelector(".button");
 const root = document.documentElement;
 const padre = document.querySelector(".padre");
 
+const segundos = 5000;
+
+// [ 🌱🌱🌱 Evento Boton Click ]
 button.addEventListener("click", () => {
-  if (contenedor.children.length>1) {
-    contenedor.classList.toggle("orillaFinal");
-
-    /*[■ Desabilita boton durante el Viaje]*/
+  // if - Minimo un tripulante
+  if (contenedorBarco.children.length > 1) {
+    // Envia a la otra Orilla
+    contenedorBarco.classList.toggle("orillaFinal");
+    // Desabilita Boton
     button.disabled = true;
-
-    setTimeout(() => {
-      button.disabled = false;
-      console.log("Llego");
-      desenbarco();
-      verificaLados();
-    }, 5000);
+    // Activa Funcion de LLegada
+    setTimeout(() => llegadaAOrillas(), segundos);
   }
 });
 
-/*[🌱 Eventos a Personajes - Inserta a Barcos]*/
+// [ 🌱🌱🌱 Funciones ]
+function llegadaAOrillas() {
+  button.disabled = false;
+  console.log("Llego");
+  desenbarco();
+  verificaLados();
+}
+
+function desenbarco() {
+  let valores = obtenerContenidoObjeto(contenedorBarco);
+  valores.shift();
+  contenedorBarco.classList.contains("orillaFinal")
+    ? valores.forEach((valor) => ladoDerecho.appendChild(valor))
+    : valores.forEach((valor) => ladoIzquierdo.appendChild(valor));
+}
+
+function verificaLados() {
+  console.log("Verifica Riesgo de Muerte");
+  muerte(obtenerContenidoObjeto(ladoIzquierdo));
+  muerte(obtenerContenidoObjeto(ladoDerecho));
+}
+
+function obtenerContenidoObjeto(caja) {
+  let hijosList = Array.from(caja.children);
+  return hijosList;
+}
+
+// [ 🌱🌱🌱 Eventos Personajes Insercion ]
 
 personajes.forEach((data) => {
   data.addEventListener("click", (e) => {
@@ -32,37 +58,12 @@ personajes.forEach((data) => {
 });
 
 function insertarEnVote(html) {
-  if (contenedor.children.length < 3) {
-    contenedor.appendChild(html);
+  if (contenedorBarco.children.length < 3) {
+    contenedorBarco.appendChild(html);
   }
 }
 
-/*[🌱 Funciones Especiales]*/
-
-async function desenbarco() {
-  let valores = contenidoObjeto(contenedor);
-  valores.shift();
-  if (contenedor.classList.contains("orillaFinal")) {
-    // Estas en la derecha
-    valores.forEach((valor) => ladoDerecho.appendChild(valor));
-  } else {
-    // Estas en la Izquierda
-    valores.forEach((valor) => ladoIzquierdo.appendChild(valor));
-  }
-}
-
-function verificaLados() {
-  console.log("Verifica Riesgo de Muerte");
-
-  muerte(contenidoObjeto(ladoIzquierdo));
-  muerte(contenidoObjeto(ladoDerecho));
-}
-
-/*[Intento de hacer un standar function que me trae los hijos de un lado como un array]*/
-function contenidoObjeto(caja) {
-  let hijosList = Array.from(caja.children);
-  return hijosList;
-}
+/*[💀💀 Verificacion y Muerte]*/
 
 function muerte(valorArray) {
   let titulos = valorArray.map((valor) => {
@@ -83,8 +84,7 @@ function muerte(valorArray) {
       document.body.insertBefore(anuncio, padre);
       console.log("DEAD DEAD");
       setTimeout(() => {
-        
-      location.reload();
+        location.reload();
       }, 3000);
       //
     }, 2000);
