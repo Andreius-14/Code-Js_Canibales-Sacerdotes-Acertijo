@@ -82,7 +82,11 @@ function muerte(valorArray) {
       anuncio.innerHTML = `<img src="img/final.jpg" title="murio"/>`;
       document.body.insertBefore(anuncio, padre);
       console.log("DEAD DEAD");
-      // location.reload();
+      setTimeout(() => {
+        
+      location.reload();
+      }, 3000);
+      //
     }, 2000);
     // document.body.innerHTML="MUERTE"
   }
