@@ -49,10 +49,19 @@ function obtenerContenidoObjeto(caja) {
   return hijosList;
 }
 
+// [ 🌱🌱🌱 Funciones ]
+function muerte(valorArray) {
+  let titulos = valorArray.map((valor) => { return valor.getAttribute("title"); });
+  let nCanival = titulos.filter((valor) => valor === "canibal").length;
+  let nSacerdote = titulos.filter((valor) => valor === "sacerdote").length;
+  if (nCanival > nSacerdote && nSacerdote > 0) {
+    anuncioPersonalizado("img/final.jpg","Murio",5000);
+  }
+}
+
 function ganamos(){
   let contador = obtenerContenidoObjeto(ladoDerecho);
   if (contador.length == 7) {
-    
     anuncioPersonalizado("img/ganaste.png","Ganador",5000);
   }
 }
@@ -71,24 +80,8 @@ function insertarEnVote(html) {
   }
 }
 
-/*[💀💀 Ver Muerte]*/
-
-function muerte(valorArray) {
-  let titulos = valorArray.map((valor) => { return valor.getAttribute("title"); });
-  let nCanival = titulos.filter((valor) => valor === "canibal").length;
-  let nSacerdote = titulos.filter((valor) => valor === "sacerdote").length;
-
-  // console.log("Canival: "+nCanival + "sacerdote: "+nSacerdote)
-
-  if (nCanival > nSacerdote && nSacerdote > 0) {
-    // console.log("Error")
-    anuncioPersonalizado("img/final.jpg","Murio",5000);
-    // document.body.innerHTML="MUERTE"
-  }
-}
-
+/*[💀💀 Anuncio]*/
 function anuncioPersonalizado(nameImagen,nameTitle,duracionDeAnuncio) {
-
       setTimeout(() => {
 
       const anuncio = document.createElement("div");
