@@ -41,6 +41,7 @@ function verificaLados() {
   console.log("Verifica Riesgo de Muerte");
   muerte(obtenerContenidoObjeto(ladoIzquierdo));
   muerte(obtenerContenidoObjeto(ladoDerecho));
+  ganamos();
 }
 
 function obtenerContenidoObjeto(caja) {
@@ -48,6 +49,13 @@ function obtenerContenidoObjeto(caja) {
   return hijosList;
 }
 
+function ganamos(){
+  let contador = obtenerContenidoObjeto(ladoDerecho);
+  if (contador.length == 7) {
+    
+    anuncioPersonalizado("img/ganaste.png","Ganador",5000);
+  }
+}
 // [ 🌱🌱🌱 Eventos Personajes Insercion ]
 
 personajes.forEach((data) => {
@@ -63,12 +71,10 @@ function insertarEnVote(html) {
   }
 }
 
-/*[💀💀 Verificacion y Muerte]*/
+/*[💀💀 Ver Muerte]*/
 
 function muerte(valorArray) {
-  let titulos = valorArray.map((valor) => {
-    return valor.getAttribute("title");
-  });
+  let titulos = valorArray.map((valor) => { return valor.getAttribute("title"); });
   let nCanival = titulos.filter((valor) => valor === "canibal").length;
   let nSacerdote = titulos.filter((valor) => valor === "sacerdote").length;
 
@@ -76,18 +82,26 @@ function muerte(valorArray) {
 
   if (nCanival > nSacerdote && nSacerdote > 0) {
     // console.log("Error")
-    setTimeout(() => {
-      // alert("Muerte");
-      const anuncio = document.createElement("div");
-      anuncio.setAttribute("class", "anuncio");
-      anuncio.innerHTML = `<img src="img/final.jpg" title="murio"/>`;
-      document.body.insertBefore(anuncio, padre);
-      console.log("DEAD DEAD");
-      setTimeout(() => {
-        location.reload();
-      }, 3000);
-      //
-    }, 2000);
+    anuncioPersonalizado("img/final.jpg","Murio",5000);
     // document.body.innerHTML="MUERTE"
   }
+}
+
+function anuncioPersonalizado(nameImagen,nameTitle,duracionDeAnuncio) {
+
+      setTimeout(() => {
+
+      const anuncio = document.createElement("div");
+      anuncio.setAttribute("class", "anuncio");
+      anuncio.innerHTML = `<img src=${nameImagen} title=${nameTitle} />`;
+      document.body.insertBefore(anuncio, padre);
+
+      console.log("DEAD DEAD");
+      
+      //Actualizar Pantalla
+      setTimeout(() => {
+        location.reload();
+      }, duracionDeAnuncio);
+
+    }, 2000);
 }
